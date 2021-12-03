@@ -33,6 +33,7 @@ public class AcessorioService {
 		Acessorio acessorio = buscarAcessorioID(acessorioAlterado.getId());
 		acessorio.setId(acessorioAlterado.getId());
 		acessorio.setNome(acessorioAlterado.getNome());
+		
 		return salvar(acessorio);
 	}
 	

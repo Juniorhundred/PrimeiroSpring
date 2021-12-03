@@ -2,12 +2,16 @@ package br.com.primeiroprojetospring.domain;
 
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -20,11 +24,39 @@ public class Carro implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Column(name = "MODELO_CARRO")
 	private String modelo;
 	
 	@OneToOne
 	@JoinColumn(name="ID_CHAVE")
 	private Chave chaveCarro;
+
+	@OneToOne
+	@JoinColumn(name="CODIGO_DOCUMENTO")
+	private Documento documentoCarro; 
+	
+	@ManyToMany
+	@JoinTable(name = "REL_CARRO_ACESSORIO",
+	joinColumns = {@JoinColumn(name = "ID_CARRO" ) },
+	inverseJoinColumns = { @JoinColumn (name= "ID_ACESSORIO") } )
+	private List<Acessorio> acessorios;
+	
+	
+	public List<Acessorio> getAcessorios() {
+		return acessorios;
+	}
+
+	public void setAcessorios(List<Acessorio> acessorios) {
+		this.acessorios = acessorios;
+	}
+
+	public Documento getDocumentoCarro() {
+		return documentoCarro;
+	}
+
+	public void setDocumentoCarro(Documento documentoCarro) {
+		this.documentoCarro = documentoCarro;
+	}
 
 	public Integer getId() {
 		return id;

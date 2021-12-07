@@ -19,7 +19,7 @@ import br.com.primeiroprojetospring.domain.Acessorio;
 import br.com.primeiroprojetospring.domain.Fabricante;
 import br.com.primeiroprojetospring.service.AcessorioService;
 
-@Controller
+@RestController
 @RequestMapping("acessorio")
 public class AcessorioController {
 	
@@ -45,7 +45,7 @@ public class AcessorioController {
 	
 	@PutMapping("/alteraFabricante")
 	public ResponseEntity<Fabricante> alteraFabricante(@RequestBody Fabricante fabricante){
-		Fabricante novofabricante = fabricanteService.salvarAlteracao(fabricante);
+		Fabricante novofabricante = acessorioService.salvarAlteracao(fabricante);
 		return ResponseEntity.status(HttpStatus.CREATED).body(novofabricante);
 	}
 	

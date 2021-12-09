@@ -7,6 +7,9 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.querydsl.jpa.impl.JPAQuery;
+
+import br.com.primeiroprojetospring.dao.CarroDAO;
 import br.com.primeiroprojetospring.domain.Carro;
 import br.com.primeiroprojetospring.repository.CarroRepository;
 
@@ -15,6 +18,9 @@ public class CarroService {
 
 	@Autowired
 	private CarroRepository carroRepository;
+	
+	@Autowired
+	private CarroDAO carroDAO;
 
 	public List<Carro> buscarTodosCarros() {
 		return carroRepository.findAll();
@@ -35,8 +41,8 @@ public class CarroService {
 		carro.setModelo(carroAlterado.getModelo());
 		carro.setChaveCarro(carroAlterado.getChaveCarro());
 		carro.setDocumentoCarro(carroAlterado.getDocumentoCarro());
-		carro.setFabricanteCarro(carroAlterado.getFabricanteCarro());
 		carro.setAcessorios(carroAlterado.getAcessorios());
+		carro.setFabricanteCarro(carroAlterado.getFabricanteCarro());
 		return salvar(carro);
 	}
 
@@ -44,4 +50,15 @@ public class CarroService {
 		carroRepository.deleteById(id);
 	}
 
+	public List<Carro> buscaCarroIdFabricante(Integer id){
+		return carroDAO.findCarroforIdFabricante(id);
+	}
+	
+	public List<Carro> buscaCarroIdDocumento(Integer id){
+		return carroDAO.findCarroforIdDocumento(id);
+	}
+
+	public List<Carro> buscarCarroTetoSolar(){
+		return carroDAO.findCarroForTetoSolar();
+	}
 }

@@ -22,46 +22,45 @@ import br.com.primeiroprojetospring.service.DocumentoService;
 @RequestMapping("documento")
 public class DocumentoController {
 	
+	private static final String DOCUMENTO = "documento";
+	
 	@Autowired
 	private DocumentoService documentoService;
 	
-	@GetMapping("/find/{id}")
+	
+	@GetMapping("find/{id}")
 	public ResponseEntity<Documento> find(@PathVariable("id") Integer id){
 		return ResponseEntity.ok().body(documentoService.buscarDocumentoID(id));
-	}
+	}	
 	
-	@PostMapping("/cadastrarDocumento")
+	@PostMapping("cadastrarDocumento")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Documento> cadastrarDocumentoAPI(@RequestBody Documento documento) {
+	public ResponseEntity<Documento> cadastrarDocumentoAPI(@RequestBody Documento documento){
 		return ResponseEntity.ok().body(documentoService.salvar(documento));
 	}
 	
-	
-	@GetMapping("/todosDocumentos")
-	public ResponseEntity<List<Documento>> devolveTodosDocumento(){
+	@GetMapping("/todosDocumento")
+	public ResponseEntity<List<Documento>> devolverTodosDocumentos(){
 		return ResponseEntity.ok().body(documentoService.buscarTodosDocumentos());
 	}
 	
 	@PutMapping("/alteraDocumento")
 	public ResponseEntity<Documento> alteraDocumento(@RequestBody Documento documento){
-		Documento novoDocumento = documentoService.salvarAlteracao(documento);
+		Documento novoDocumento = documentoService.salvar(documento);
 		return ResponseEntity.status(HttpStatus.CREATED).body(novoDocumento);
-	}
-	
-	
-	 
+	}	
 	
 	@GetMapping("/listaDocumentos")
 	public ModelAndView  listaTodosDocumento() {
 		ModelAndView mView = new ModelAndView("documento/paginaListaDocumentos");
-		mView.addObject("documento", documentoService.buscarTodosDocumentos());
+		mView.addObject(DOCUMENTO, documentoService.buscarTodosDocumentos());
 		return mView;
 	}
 	
 	@GetMapping("/cadastrar")
 	public ModelAndView cadastrarDocumento() {
 		ModelAndView mView = new ModelAndView("documento/cadastrarDocumento");
-		mView.addObject("documento", new Documento());
+		mView.addObject(DOCUMENTO, new Documento());
 		return mView;
 	}
 	
@@ -74,7 +73,7 @@ public class DocumentoController {
 	@GetMapping("/alterar/{id}")
 	public ModelAndView alteraDocumento(@PathVariable("id") Integer idDocumento) {
 		ModelAndView mView = new ModelAndView("documento/alteraDocumento");
-		mView.addObject("documento", documentoService.buscarDocumentoID(idDocumento));
+		mView.addObject(DOCUMENTO, documentoService.buscarDocumentoID(idDocumento));
 		return mView;
 	}
 	
@@ -88,6 +87,12 @@ public class DocumentoController {
 	public ModelAndView excluir(@PathVariable("id") Integer id) {
 		documentoService.excluir(id);
 		return listaTodosDocumento();
+	}
+	
+	@GetMapping("/findByNomeAndCodigoDocumento/{nome}/{codigo}")
+	public ResponseEntity<List<Documento>> findByNomeAndCodigoDocumento(@PathVariable("nome") String nome,
+			@PathVariable("codigo") String codigo) {
+		return ResponseEntity.ok().body(documentoService.findDocumentoNomeAndCodigo(nome, codigo));
 	}
 
 }

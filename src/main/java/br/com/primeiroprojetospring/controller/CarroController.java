@@ -26,6 +26,8 @@ import br.com.primeiroprojetospring.service.FabricanteService;
 @RequestMapping("carro")
 public class CarroController {
 	
+	private static final String CARRO = "carro";
+	
 	@Autowired
 	private CarroService carroService;
 	
@@ -41,47 +43,46 @@ public class CarroController {
 	@Autowired
 	private FabricanteService fabricanteService;
 	
-	@GetMapping("/find/{id}")
+	@GetMapping("find/{id}")
 	public ResponseEntity<Carro> find(@PathVariable("id") Integer id){
 		return ResponseEntity.ok().body(carroService.buscarCarroID(id));
 	}
 	
-	@PostMapping("/cadastrarCarro")
+	@PostMapping("cadastrarCarro")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Carro> cadastrarCarroAPI(@RequestBody Carro carro) {
+	public ResponseEntity<Carro> cadastrarCarroAPI(@RequestBody Carro carro){
 		return ResponseEntity.ok().body(carroService.salvar(carro));
 	}
 	
-	
-	@GetMapping("/todosCarros")
-	public ResponseEntity<List<Carro>> devolveTodosCarros(){
+	@GetMapping("/todosCarro")
+	public ResponseEntity<List<Carro>> devolverTodosCarros(){
 		return ResponseEntity.ok().body(carroService.buscarTodosCarros());
 	}
 	
 	@PutMapping("/alteraCarro")
 	public ResponseEntity<Carro> alteraCarro(@RequestBody Carro carro){
-		Carro novoCarro = carroService.salvarAlteracao(carro);
+		Carro novoCarro = carroService.salvar(carro);
 		return ResponseEntity.status(HttpStatus.CREATED).body(novoCarro);
 	}
 	
 	@GetMapping("/listaCarros")
 	public ModelAndView  listaTodosCarro() {
 		ModelAndView mView = new ModelAndView("carro/paginaListaCarros");
-		mView.addObject("carro", carroService.buscarTodosCarros());
+		mView.addObject(CARRO, carroService.buscarTodosCarros());
 		return mView;
 	}
 	
 	@GetMapping("/cadastrar")
 	public ModelAndView cadastrarCarro() {
 		ModelAndView mView = new ModelAndView("carro/cadastrarCarro");
-		mView.addObject("carro", new Carro());
-		mView.addObject("chaves", chaveService.buscarTodasChaves());
-		mView.addObject("documentos", documentoService.buscarTodosDocumentos());
-		mView.addObject("acessorios", acessorioService.buscarTodosAcessorios());
-		mView.addObject("fabricantes", fabricanteService.buscarTodosFabricantes());
+		mView.addObject(CARRO, new Carro());
+		mView.addObject("chave", chaveService.buscarTodasChaves());
+		mView.addObject("documento", documentoService.buscarTodosDocumentos());
+		mView.addObject("acessorio", acessorioService.buscarTodosAcessorios());
+		mView.addObject("fabricante", fabricanteService.buscarTodosFabricantes());
 		return mView;
 	}
-		
+	
 	@PostMapping("/salvar")
 	public ModelAndView salvarCarro(Carro carro) {
 		carroService.salvar(carro);
@@ -91,11 +92,11 @@ public class CarroController {
 	@GetMapping("/alterar/{id}")
 	public ModelAndView alteraCarro(@PathVariable("id") Integer idCarro) {
 		ModelAndView mView = new ModelAndView("carro/alteraCarro");
-		mView.addObject("carro", carroService.buscarCarroID(idCarro));	
-		mView.addObject("chaves", chaveService.buscarTodasChaves());
-		mView.addObject("documentos", documentoService.buscarTodosDocumentos());
-		mView.addObject("acessorios", acessorioService.buscarTodosAcessorios());
-		mView.addObject("fabricantes", fabricanteService.buscarTodosFabricantes());
+		mView.addObject(CARRO, carroService.buscarCarroID(idCarro));	
+		mView.addObject("chave", chaveService.buscarTodasChaves());
+		mView.addObject("documento", documentoService.buscarTodosDocumentos());
+		mView.addObject("acessorio", acessorioService.buscarTodosAcessorios());
+		mView.addObject("fabricante", fabricanteService.buscarTodosFabricantes());
 		return mView;
 	}
 	
@@ -109,6 +110,23 @@ public class CarroController {
 	public ModelAndView excluir(@PathVariable("id") Integer id) {
 		carroService.excluir(id);
 		return listaTodosCarro();
+	}
+	
+	
+	@GetMapping("findCarroforIdFabricante/{id}")
+	public ResponseEntity<List<Carro>> findCarroforIdFabricante(@PathVariable("id") Integer id){
+		return ResponseEntity.ok().body(carroService.buscaCarroIdFabricante(id));
+	}
+	
+	
+	@GetMapping("findCarroforIdDocumento/{id}")
+	public ResponseEntity<List<Carro>> findCarroforIdDocumento(@PathVariable("id") Integer id){
+		return ResponseEntity.ok().body(carroService.buscaCarroIdDocumento(id));
+	}
+	
+	@GetMapping("findCarroTetoSolar")
+	public ResponseEntity<List<Carro>> findCarroTetoSolar (){
+		return ResponseEntity.ok().body(carroService.buscarCarroTetoSolar());
 	}
 
 }

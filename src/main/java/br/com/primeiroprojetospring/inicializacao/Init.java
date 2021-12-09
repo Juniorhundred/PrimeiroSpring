@@ -1,62 +1,151 @@
 package br.com.primeiroprojetospring.inicializacao;
 
-import java.util.List;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import br.com.primeiroprojetospring.domain.Acessorio;
 import br.com.primeiroprojetospring.domain.Aluno;
-import br.com.primeiroprojetospring.domain.Professor;
+import br.com.primeiroprojetospring.domain.Carro;
+import br.com.primeiroprojetospring.domain.Chave;
+import br.com.primeiroprojetospring.domain.Documento;
+import br.com.primeiroprojetospring.domain.Fabricante;
+import br.com.primeiroprojetospring.service.AcessorioService;
 import br.com.primeiroprojetospring.service.AlunoService;
-import br.com.primeiroprojetospring.service.ProfessorService;
+import br.com.primeiroprojetospring.service.CarroService;
+import br.com.primeiroprojetospring.service.ChaveService;
+import br.com.primeiroprojetospring.service.DocumentoService;
+import br.com.primeiroprojetospring.service.FabricanteService;
+
 
 @Component
 public class Init implements ApplicationListener<ContextRefreshedEvent> {
 
 	@Autowired
-	private AlunoService AlunoService;
+	private AlunoService alunoService;
+
 	@Autowired
-	private ProfessorService ProfessorService;
+	private FabricanteService fabricanteService;
+
+	@Autowired
+	private ChaveService chaveService;
+
+	@Autowired
+	private AcessorioService acessorioService;
+
+	@Autowired
+	private DocumentoService documentoService;
+	
+	@Autowired
+	private CarroService carroService;
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 
 		Aluno aluno1 = new Aluno();
 		aluno1.setNome("Julia");
-		AlunoService.salvar(aluno1);
+		alunoService.salvar(aluno1);
 
 		Aluno aluno2 = new Aluno();
-		aluno2.setNome("Roberto1");
-		AlunoService.salvar(aluno2);
+		aluno2.setNome("Juliano");
+		alunoService.salvar(aluno2);
 
 		Aluno aluno3 = new Aluno();
-		aluno3.setNome("Samuel");
-		AlunoService.salvar(aluno3);
+		aluno3.setNome("Antônio");
+		alunoService.salvar(aluno3);
 
-		List<Aluno> listaAluno = AlunoService.buscarTodosAlunos();
+		Chave chave1 = new Chave();
+		chave1.setCodigo("15421");
+		chaveService.salvar(chave1);
 
-		for (Aluno aluno : listaAluno) {
-			System.out.println(aluno.getNome());
-		}
+		Chave chave2 = new Chave();
+		chave2.setCodigo("66564");
+		chaveService.salvar(chave2);
 
-		Professor Professor1 = new Professor();
-		Professor1.setNome("Sandro");
-		ProfessorService.salvar(Professor1);
+		Chave chave3 = new Chave();
+		chave3.setCodigo("33321");
+		chaveService.salvar(chave3);
 
-		Professor Professor2 = new Professor();
-		Professor2.setNome("Antonio");
-		ProfessorService.salvar(Professor2);
+		Chave chave4 = new Chave();
+		chave4.setCodigo("2333");
+		chaveService.salvar(chave4);
 
-		Professor Professor3 = new Professor();
-		Professor3.setNome("Junior");
-		ProfessorService.salvar(Professor3);
+		Fabricante f1 = new Fabricante();
+		f1.setNome("FIAT");
+		f1.setPais("ITALIA");
+		fabricanteService.salvar(f1);
 
-		List<Professor> listaProfessor = ProfessorService.buscarTodosProfessores();
+		Fabricante f2 = new Fabricante();
+		f2.setNome("BMW");
+		f2.setPais("ALEMANHA");
+		fabricanteService.salvar(f2);
 
-		for (Professor professor : listaProfessor) {
-			System.out.println(professor.getNome());
-		}
+		Fabricante f3 = new Fabricante();
+		f3.setNome("OPEL");
+		f3.setPais("EUA");
+		fabricanteService.salvar(f3);
+
+		Documento doc1 = new Documento();
+		doc1.setCodigo("1232");
+		doc1.setNome("ABC");
+		documentoService.salvar(doc1);
+
+		Documento doc2 = new Documento();
+		doc2.setCodigo("33321");
+		doc2.setNome("ASS");
+		documentoService.salvar(doc2);
+
+		Documento doc3 = new Documento();
+		doc3.setCodigo("3468");
+		doc3.setNome("PPA");
+		documentoService.salvar(doc3);
+
+		Acessorio a1 = new Acessorio();
+		a1.setNome("Teto Solar");
+		acessorioService.salvar(a1);
+
+		Acessorio a2 = new Acessorio();
+		a2.setNome("Vidro Eletrico");
+		acessorioService.salvar(a2);
+
+		Acessorio a3 = new Acessorio();
+		a3.setNome("Banco Couro");
+		acessorioService.salvar(a3);
+		
+		Carro c1 = new Carro();
+		c1.setAcessorios(Arrays.asList(a2, a1));
+		c1.setChaveCarro(chave1);
+		c1.setDocumentoCarro(doc1);
+		c1.setFabricanteCarro(f1);
+		c1.setModelo("ABC");
+		carroService.salvar(c1);
+
+		Carro c2 = new Carro();
+		c2.setAcessorios(Arrays.asList(a1, a3));
+		c2.setChaveCarro(chave2);
+		c2.setDocumentoCarro(doc3);
+		c2.setFabricanteCarro(f2);
+		c2.setModelo("SSD");
+		carroService.salvar(c2);
+
+		Carro c3 = new Carro();
+		c3.setAcessorios(Arrays.asList(a3));
+		c3.setChaveCarro(chave3);
+		c3.setDocumentoCarro(doc2);
+		c3.setFabricanteCarro(f3);
+		c3.setModelo("WEW");
+		carroService.salvar(c3);
+
+		Carro c4 = new Carro();
+		c4.setAcessorios(Arrays.asList(a2, a3, a1));
+		c4.setChaveCarro(chave4);
+		c4.setDocumentoCarro(doc2);
+		c4.setFabricanteCarro(f3);
+		c4.setModelo("DDS");
+		carroService.salvar(c4);
 	}
+	
 }

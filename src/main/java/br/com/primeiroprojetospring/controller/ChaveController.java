@@ -22,43 +22,45 @@ import br.com.primeiroprojetospring.service.ChaveService;
 @RequestMapping("chave")
 public class ChaveController {
 
+	private static final String CHAVE = "chave";
+	
 	@Autowired
 	private ChaveService chaveService;
 	
-	
-	@GetMapping("/find/{id}")
+	@GetMapping("find/{id}")
 	public ResponseEntity<Chave> find(@PathVariable("id") Integer id){
 		return ResponseEntity.ok().body(chaveService.buscarChaveID(id));
-	}
+	}	
 	
-	@PostMapping("/cadastrarChave")
+	@PostMapping("cadastrarChave")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Chave> cadastrarChaveAPI(@RequestBody Chave chave) {
+	public ResponseEntity<Chave> cadastrarChaveAPI(@RequestBody Chave chave){
 		return ResponseEntity.ok().body(chaveService.salvar(chave));
 	}
 	
-	
 	@GetMapping("/todasChave")
-	public ResponseEntity<List<Chave>> devolveTodosCarros(){
+	public ResponseEntity<List<Chave>> devolverTodosChave(){
 		return ResponseEntity.ok().body(chaveService.buscarTodasChaves());
 	}
 	
 	@PutMapping("/alteraChave")
 	public ResponseEntity<Chave> alteraChave(@RequestBody Chave chave){
-		Chave novaChave = chaveService.salvarAlteracao(chave);
-		return ResponseEntity.status(HttpStatus.CREATED).body(novaChave);
+		Chave novoChave = chaveService.salvar(chave);
+		return ResponseEntity.status(HttpStatus.CREATED).body(novoChave);
 	}
+	
+	
 	@GetMapping("/listaChave")
 	public ModelAndView  listaTodasChaves() {
 		ModelAndView mView = new ModelAndView("chave/paginaListaChave");
-		mView.addObject("chave", chaveService.buscarTodasChaves());
+		mView.addObject(CHAVE, chaveService.buscarTodasChaves());
 		return mView;
 	}
 	
 	@GetMapping("/cadastrar")
 	public ModelAndView cadastrarChave() {
 		ModelAndView mView = new ModelAndView("chave/cadastrarChave");
-		mView.addObject("chave", new Chave());
+		mView.addObject(CHAVE, new Chave());
 		return mView;
 	}
 	
@@ -71,7 +73,7 @@ public class ChaveController {
 	@GetMapping("/alterar/{id}")
 	public ModelAndView alteraChave(@PathVariable("id") Integer idChave) {
 		ModelAndView mView = new ModelAndView("chave/alteraChave");
-		mView.addObject("chave", chaveService.buscarChaveID(idChave));
+		mView.addObject(CHAVE, chaveService.buscarChaveID(idChave));
 		return mView;
 	}
 	
@@ -85,5 +87,10 @@ public class ChaveController {
 	public ModelAndView excluir(@PathVariable("id") Integer id) {
 		chaveService.excluir(id);
 		return listaTodasChaves();
+	}
+	
+	@GetMapping("/findByCodigoChave/{codigo}")
+	public ResponseEntity<List<Chave>> findChaveCodigo(@PathVariable("codigo") String codigo) {
+		return ResponseEntity.ok().body(chaveService.findCodigoChave(codigo));
 	}
 }

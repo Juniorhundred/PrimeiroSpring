@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,6 +74,7 @@ public class CarroController {
 	}
 	
 	@GetMapping("/cadastrar")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ModelAndView cadastrarCarro() {
 		ModelAndView mView = new ModelAndView("carro/cadastrarCarro");
 		mView.addObject(CARRO, new Carro());
@@ -84,6 +86,7 @@ public class CarroController {
 	}
 	
 	@PostMapping("/salvar")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ModelAndView salvarCarro(Carro carro) {
 		carroService.salvar(carro);
 		return listaTodosCarro();
@@ -125,6 +128,7 @@ public class CarroController {
 	}
 	
 	@GetMapping("findCarroTetoSolar")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Carro>> findCarroTetoSolar (){
 		return ResponseEntity.ok().body(carroService.buscarCarroTetoSolar());
 	}

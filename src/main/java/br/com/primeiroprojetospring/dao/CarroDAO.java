@@ -49,3 +49,4 @@ public class CarroDAO {
 				.where(carro.acessorios.any().nome.equalsIgnoreCase(TETO_SOLAR)).fetch();
 	}
 }
+	

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http:www.thymeleaf.org">
+	xmlns:th="http:www.thymeleaf.org"
+	xmlns:sec="http:www.thymeleaf.org/extras/spring-security">
 <head>
 <title>Listagem de Carros</title>
 <link
@@ -26,7 +27,7 @@
 								<th>CHAVE</th>
 								<th>DOCUMENTO</th>
 								<th>FABRICANTE</th>
-								<th>ACESSORIOS</th>
+								<th>ACESSÓRIO</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -37,11 +38,10 @@
 								<td th:text="${carro.chaveCarro.id}"></td>
 								<td th:text="${carro.documentoCarro.nome}"></td>
 								<td th:text="${carro.fabricanteCarro.nome}"></td>
-								
 								<td>
-								<span th:each="acessorio: ${carro.acessorios}" th:text="${''+acessorio.nome + ' / '}"></span>
+									<span th:each="acessorio : ${carro.acessorios}" th:text="${'' + acessorio.nome + ' / '}"></span>
+								</td>
 								<td>
-								
 									<div class="btn-group pull-right">
 										<a class="btn btn-sm btn-primary" th:href="@{/carro/alterar/{idCarro}(idCarro=${carro.id})}">ALTERAR</a>
 										<a class="btn delete btn-sm btn-danger" th:href="@{/carro/excluir/{idCarro}(idCarro=${carro.id})}">EXCLUIR</a>
@@ -53,7 +53,9 @@
 				</div>
 			</div>
 		</div>
-		<a class="btn tbn-sm btn-success" th:href="@{/carro/cadastrar}">CADASTRAR NOVO CARRO</a>
+		<div class ="panel-footer" sec:authorize="hasRole('ADMIN')">
+			<a class="btn tbn-sm btn-success" th:href="@{/carro/cadastrar}">CADASTRAR NOVO CARRO</a>
+		</div>
 	</div>
 
 </body>

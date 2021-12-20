@@ -17,6 +17,7 @@ import br.com.primeiroprojetospring.domain.QFabricante;
 @Repository
 public class CarroDAO {
 
+
 	@Autowired
 	private EntityManager entityManager;
 	
